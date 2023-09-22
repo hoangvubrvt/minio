@@ -1,0 +1,25 @@
+version: '2'
+
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/yourdomain.conf
+    command: [nginx-debug, '-g', 'daemon off;']
+  minio:
+    image: bitnami/minio:latest
+    volumes:
+      - 'minio_data:/bitnami/minio/data'
+    environment:
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=1234qwerQWER
+      - MINIO_SERVER_URL=https://yourdomain
+      - MINIO_BROWSER_REDIRECT_URL=https://yourconsoledomain
+
+volumes:
+  minio_data:
+    driver: local
+
